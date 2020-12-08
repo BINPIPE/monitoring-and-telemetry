@@ -351,6 +351,17 @@ Last but not least, there are a ton of  [premade dashboard-templates](https://gr
 
 Follow [this link for a DEMONSTRATION for SPRINGBOOT MONITORING USING PROMETHEUS TELEMETRY & GRAFANA DASHBOARDS](https://github.com/BINPIPE/monitoring-and-telemetry/tree/master/prometheus-grafana)
 
+___
+### ELK
+
+ELK Stack is designed to allow users to take to data from any source, in any format, and to search, analyze, and visualize that data in real time.
+
+ELK provides centralized logging that be useful when attempting to identify problems with servers or applications. It allows you to search all your logs in a single place. It also helps to find issues that occur in multiple servers by connecting their logs during a specific time frame.
+
+[Read more about ELK and the demonstration] (https://github.com/BINPIPE/monitoring-and-telemetry)
+
+
+
 
 ___
 :ledger: Maintainer: **[Prasanjit Singh](https://www.linkedin.com/in/prasanjit-singh)** | **www.binpipe.org**
