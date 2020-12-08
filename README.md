@@ -159,6 +159,200 @@ ___
 
 
 
+## TELEMETRY & MONITORING FOR APPLICATIONS USING PROMETHEUS & GRAFANA
+
+In a distributed landscape where we are working with microservices, serverless applications, or just event-driven architecture as a whole, observability, which comprises monitoring, logging, tracing, and alerting, is an important architectural concern.
+
+There are a few reasons why we want visibility in our highly distributed systems:
+
+-   Issues will occur, even when our best employees have built it.
+-   Distributed systems generate distributed failures, which can be devastating when we are not prepared in advance.
+-   Reveal mistakes early, which is great for improvement and learning.
+-   It keeps us accountable.
+-   Reduce the mean time to resolution (MTTR).
+
+In this blogpost I will explain the core concepts of Prometheus and Grafana.  
+In the last section I set up a demo project, so you can follow along and implement monitoring in your own applications.
+
+**PROMETHEUS**
+
+**WHAT IS PROMETHEUS?**
+
+Prometheus, originally developed by SoundCloud is an open source and community-driven project that graduated from the Cloud Native Computing Foundation. It can aggregate data from almost everything:
+
+-   Microservices
+-   Multiple languages
+-   Linux servers
+-   Windows servers
+
+**WHY DO WE NEED PROMETHEUS?**
+
+In our modern times of microservices, DevOps is becoming more and more complex and therefore needs automation.  
+We have hundreds of processes running over multiple servers, and they are all interconnected.
+
+If we would not monitor these services then we have no clue about what is happening on hardware level or application level.  
+There are many things which we want to be notified about, like:
+
+-   Errors
+-   Response latency
+-   System overload
+-   Resources
+
+When we are working with so many moving pieces, we want to be able to quickly identify a problem when something goes wrong inside one of our services.  
+If we wouldn’t monitor, it could be very time-consuming, since we have no idea where to look.
+
+**AN EXAMPLE OF A FAILING SERVICE**
+
+Imagine that one server ran out of memory and therefore knocked off a running service container, which syncs two databases.  
+One of those databases gets used by the authentication service, which now also stops working, because the database is unavailable.
+
+![prometheus server](screenshots/failing-servers.jpg)
+
+How do you know what went wrong, when your application that depends on the authentication service, now can’t authenticate users anymore?  
+The only thing we would see is an error message:  `ERROR: Authentication failed`.  
+We would need to work backwards over every service, all the way back to the stopped container, to find out what is causing the problem.
+
+A better way would be to have a tool which:
+
+-   Constantly monitors all services
+-   Alerts system admins when something crashes
+-   Identifies problems before they occur
+
+Prometheus is exactly that tool, it can identify memory usage, CPU usage, available disk space, etc.  
+We can predefine certain thresholds about which we want to get notified.
+
+In our example it could have been that the memory of our failing server would have reached 70% memory usage for more than one hour, and could’ve sent an alert to our admins before the crash happened.
+
+** HOW IT WORKS**
+
+**PROMETHEUS SERVER**
+
+The server does the actual monitoring work, and it consists of three main parts:
+
+-   Storage, which is a time series database.
+-   Data retrieval worker, which is pulling the data from our target services.
+-   Webserver, which accepts  [PromQL](https://prometheus.io/docs/prometheus/latest/querying/basics/)  queries to get data from our DB.
+
+![prometheus server](screenshots/prom-server.jpg)
+
+Even though Prometheus has its own UI to show graphs and metrics, we will be using Grafana as an extra layer on top of this webserver, to query and visualize our database.
+
+**PROMETHEUS TARGETS**
+
+#### WHAT DOES IT MONITOR?
+
+Prometheus monitors nearly anything. It could be a Linux/windows server, Apache server, single applications, services, etc.  
+It monitors  **units**  on those targets like:
+
+-   CPU usage
+-   Memory/ Disk usage
+-   Request count
+-   Request durations
+-   Exceptions count
+
+The units that we monitor are called metrics, which get saved into the Prometheus time-series database.  
+Prometheus’ metrics are formatted like a human-readable text file.
+
+![Prometheus endpoint actuator](screenshots/prometheus-endpoint.PNG)
+
+In this file we can see that there is a “HELP” comment which describes what the metric is, and we have a “TYPE” which can be one of four metric-types:
+
+-   Counter: how many times X happened (exceptions)
+-   Gauge: what is the current value of X now ? (disk usage, cpu etc)
+-   Histogram: how long or how big?
+-   Summary: similar to histogram it monitors request durations and response sizes
+
+#### COLLECTING METRICS FROM TARGETS
+
+There are basically two ways of ingesting metrics into a monitoring system.  
+We can either push the data from our clients to our monitoring system, or we pull the data from the monitoring system.
+
+Prometheus is a service which polls a set of configured targets to intermittently fetch their metric values.  
+In Prometheus terminology, this polling is called scraping.
+
+There is no clear-cut answer about which one is the best, they both have their pros and cons, but some big disadvantages for pushing data are:
+
+-   possibility of flooding the network.
+-   risk of package loss.
+
+![pull data image](screenshots/pull-data.jpg)
+
+The data which gets exposed on the endpoint needs to be in the correct format, one which Prometheus can understand.
+
+As stated before, Prometheus can monitor a lot of different things, servers, services, databases, etc.  
+Some servers even have a metrics endpoint enabled by default, so for those we don’t have to change anything.  
+For the ones who don’t have an endpoint enabled by default, we need an exporter.
+
+#### EXPORTERS
+
+There are a number of libraries and servers which help in exporting existing metrics from third-party systems as Prometheus metrics. You can have a look at the  [exporters and integration tools](https://prometheus.io/docs/instrumenting/exporters/)  here.
+
+On a side note, these tools are also available as Docker images, so we can use them inside Kubernetes clusters.  
+We can run an exporter docker image for a MySQL database as a side container inside the MySQL pod, connect to it and start translating data, to expose it on the metrics endpoint.
+
+#### MONITORING OUR OWN APPLICATION
+
+If we want to add our own instrumentation to our code, to know how many server resources our own application is using, how many requests it is handling or how many exceptions occurred, then we need to use one of the  [client libraries](https://prometheus.io/docs/instrumenting/clientlibs/). These libraries will enable us to declare all the metrics we deem important in our application, and expose them on the metrics endpoint.
+
+### MICROMETER
+
+To monitor our Spring Boot application we will be using an exporter named Micrometer.  
+Micrometer is an open-source project and provides a metric facade that exposes metric data in a vendor-neutral format which Prometheus can ingest.
+
+> Micrometer provides a simple facade over the instrumentation clients for the most popular monitoring systems, allowing you to instrument your JVM-based application code without vendor lock-in. Think SLF4J, but for metrics.
+
+Micrometer is not part of the Spring ecosystem and needs to be added as a dependency. In our demo application we will add this to our  `pom.xml`  file. For a deeper understanding, check out our  [blog post](https://ordina-jworks.github.io/microservices/2017/09/17/monitoring-your-microservices-with-micrometer.html)  about Micrometer.
+
+## CONFIGURING PROMETHEUS
+
+To instruct Prometheus on what it needs to scrape, we create a  **prometheus.yml**  configuration file.
+
+![Prometheus configuration file](screenshots/promyml.PNG)
+
+In this configuration file we declare a few things:
+
+1.  global configs, like how often it will scrape its targets.
+2.  we can declare  [rule files](https://prometheus.io/docs/prometheus/latest/configuration/alerting_rules/), so when we meet a certain condition, we get an alert.
+3.  which services it needs to monitor.
+
+In this example you can see that Prometheus will monitor two things:
+
+-   Our Spring Boot application
+-   Its own health
+
+Prometheus expects the data of our targets to be exposed on the  `/metrics`  endpoint, unless otherwise declared in the  `metrics_path`  field.
+
+### ALERTS
+
+With Prometheus, we have the possibility to get notified when metrics have reached a certain point, which we can declare in the  `.rules`  files. Prometheus has a component which is called the “Alertmanager”, and it can send notifications over various channels like emails, Slack, PagerDuty, etc.
+
+### QUERYING OUR DATA
+
+Since Prometheus saves all our data in a time series database, which is located on disk in a custom timeseries format, we need to use PromQL query language, if we want to query this database.
+
+We can do this via the Prometheus WebUI, or we can use some more powerful visualization tools like Grafana.
+
+## GRAFANA
+
+### WHAT IS GRAFANA
+
+Grafana is an open-source metric analytics & visualization application.
+
+-   It is used for visualizing time series data for infrastructure and application analytics.
+-   It is also a web application which can be deployed anywhere users want.
+-   It can target a data source from Prometheus and use its customizable panels to give users powerful visualization of the data from any infrastructure under management.
+
+### WHY GRAFANA
+
+One of the significant advantages of Grafana are its customization possibilities.  
+It’s effortless to customize the visualization for vast amounts of data.  
+We can choose a linear graph, a single number panel, a gauge, a table, or a heatmap to display our data.  
+We can also sort all our data with various labels so data with different labels will go to different panels.
+
+Last but not least, there are a ton of  [premade dashboard-templates](https://grafana.com/grafana/dashboards)  ready to be imported, so we don’t have to create everything manually.
+
+
+Follow this link for a DEMONSTRATION for SPRINGBOOT MONITORING USING PROMETHEUS TELEMETRY & GRAFANA DASHBOARDS.
 
 
 ___
