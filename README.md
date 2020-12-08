@@ -358,7 +358,7 @@ ELK Stack is designed to allow users to take to data from any source, in any for
 
 ELK provides centralized logging that be useful when attempting to identify problems with servers or applications. It allows you to search all your logs in a single place. It also helps to find issues that occur in multiple servers by connecting their logs during a specific time frame.
 
-Read [more about ELK and the demonstration](https://github.com/BINPIPE/monitoring-and-telemetry)
+Read [more about ELK and the demonstration](https://github.com/BINPIPE/monitoring-and-telemetry/tree/master/elk)
 
 ___
 :ledger: Maintainer: **[Prasanjit Singh](https://www.linkedin.com/in/prasanjit-singh)** | **www.binpipe.org**
