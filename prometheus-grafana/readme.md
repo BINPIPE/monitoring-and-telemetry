@@ -186,7 +186,7 @@ The dashboard I used to monitor our application is the JVM Micrometer dashboard 
 Give your dashboard a custom name and select the prometheus data source we configured in step 3.  
 Now we have a fully pre-configured dashboard, with some important metrics showcased, out of the box.
 
-![Grafana dashboard](../screenshots/graf-donePNG.jpg)
+![Grafana dashboard](../screenshots/graf-done.jpg)
 
 ### ADDING A CUSTOM METRIC PANEL
 
@@ -209,4 +209,4 @@ Afterwards, we can do the same thing for our  `demo_counter`  metric.
 
 After going through all of these steps, we now have an operational dashboard which monitors our Spring Boot application, with our own custom metrics.
 
-![Grafana data source](../screenshots/graf-dashPNG.jpg)
+![Grafana data source](../screenshots/graf-dash.jpg)
