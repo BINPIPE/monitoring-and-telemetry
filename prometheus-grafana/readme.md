@@ -38,7 +38,7 @@ To demonstrate how to implement Prometheus and Grafana in your own projects, I w
     
 5.  After this we can run the application and browse to  `localhost:8080/actuator`, where we can see all the available endpoints. The one we need and will use to monitor this application, is  `localhost:8080/actuator/prometheus`.
 
-![Prometheus endpoint actuator](screenshots/prometheus-endpoint.PNG)
+![Prometheus endpoint actuator](../screenshots/prometheus-endpoint.PNG)
 
 ### ADDING OUR OWN CUSTOM METRICS
 
@@ -102,7 +102,7 @@ public class DemoMetricsScheduler {
 
 Now we are able to see our custom metrics on the  `/actuator/prometheus`  endpoint, as you can see below.
 
-![Prometheus custom metrics text](screenshots/custom_metrics.PNG)
+![Prometheus custom metrics text](../screenshots/custom_metrics.PNG)
 
 ### SETUP PROMETHEUS
 
@@ -148,15 +148,15 @@ We mount the  `prometheus.yml`  config file into the Prometheus image and expose
 
 When this is up and running we can access the Prometheus webUI on  `localhost:9090`.
 
-![Prometheus UI](screenshots/prometheusUI.PNG)
+![Prometheus UI](../screenshots/prometheusUI.PNG)
 
 When we navigate to Status > Targets, we can check if our connections are up and are correctly configured.
 
-![Prometheus target tab](screenshots/prometheus-target.PNG)
+![Prometheus target tab](../screenshots/prometheus-target.PNG)
 
 Yet again, we can check our custom metrics in the Prometheus UI, by selecting the  `demo_gauge`  and inspecting our graph.
 
-![Prometheus custom metrics graph](screenshots/custom-graph.PNG)
+![Prometheus custom metrics graph](../screenshots/custom-graph.PNG)
 
 ### SETUP GRAFANA
 
@@ -171,22 +171,22 @@ docker run -d -p 3000:3000 grafana/grafana
 
 Now we can access the Grafana UI from  `localhost:3000`, where you can enter “admin” as login and password.
 
-![Grafana UI](screenshots/grafana-ui.PNG)
+![Grafana UI](../screenshots/grafana-ui.PNG)
 
 After we arrive at the landing page, we need to set up a data source for Grafana.  
 Navigate to Configuration > Data Sources, add a Prometheus data source and configure it like the example below.
 
-![Grafana data source](screenshots/grafana-datasource.PNG)
+![Grafana data source](../screenshots/grafana-datasource.PNG)
 
 For this example I used one of the premade dashboards which you can find on the  [Grafana Dashboards](https://grafana.com/grafana/dashboards)  page.  
 The dashboard I used to monitor our application is the JVM Micrometer dashboard with import id: 4701.
 
-![Grafana data source](screenshots/grafana-import.PNG)
+![Grafana data source](../screenshots/grafana-import.PNG)
 
 Give your dashboard a custom name and select the prometheus data source we configured in step 3.  
 Now we have a fully pre-configured dashboard, with some important metrics showcased, out of the box.
 
-![Grafana dashboard](screenshots/graf-done.png)
+![Grafana dashboard](../screenshots/graf-done.png)
 
 ### ADDING A CUSTOM METRIC PANEL
 
@@ -194,19 +194,19 @@ To demonstrate how we can create a panel for one of our own custom metrics, I wi
 
 First we need to add a panel by clicking on “add panel” on the top of the page, and yet again on “add new panel” in the center.
 
-![Grafana add extra panel](screenshots/graf-add-panel.PNG)
+![Grafana add extra panel](../screenshots/graf-add-panel.PNG)
 
 Then we need to configure our panel, which we do by selecting  `demo_gauge`  in the metrics field.  
 To display our graph in a prettier way, we can choose the “stat” type under the visualization tab.
 
-![Grafana add extra panel](screenshots/graf-custom-panel-gauge.PNG)
+![Grafana add extra panel](../screenshots/graf-custom-panel-gauge.PNG)
 
 When we click on  `Apply`  in the top right corner, our new panel gets added to the dashboard.
 
 Afterwards, we can do the same thing for our  `demo_counter`  metric.
 
-![Grafana add another extra panel](screenshots/graf-custom-panel-counter.PNG)
+![Grafana add another extra panel](../screenshots/graf-custom-panel-counter.PNG)
 
 After going through all of these steps, we now have an operational dashboard which monitors our Spring Boot application, with our own custom metrics.
 
-![Grafana data source](screenshots/graf-dash.png)
+![Grafana data source](../screenshots/graf-dash.png)
