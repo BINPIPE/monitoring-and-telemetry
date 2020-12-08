@@ -26,15 +26,15 @@ ___
 ## Common Linux Monitoring Commands
 Below are some common linux monitoring commands:
 ```
-1- Top  
-2- HTOP  
-3- Free  
-4- Telnet  
-5- MyTOP  
-6- IOStat  
-7- SAR  
-8- LSOF  
-9- VMSTAT  
+1- top  
+2- htop  
+3- free  
+4- telnet  
+5- mytop  
+6- iostat  
+7- sar  
+8- lsof  
+9- vmstat  
 10- netstat
 ```
 ## Top
