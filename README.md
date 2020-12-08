@@ -349,7 +349,7 @@ We can also sort all our data with various labels so data with different labels 
 Last but not least, there are a ton of  [premade dashboard-templates](https://grafana.com/grafana/dashboards)  ready to be imported, so we don’t have to create everything manually.
 
 
-Follow this link for a DEMONSTRATION for SPRINGBOOT MONITORING USING PROMETHEUS TELEMETRY & GRAFANA DASHBOARDS.
+Follow [this link for a DEMONSTRATION for SPRINGBOOT MONITORING USING PROMETHEUS TELEMETRY & GRAFANA DASHBOARDS](https://github.com/BINPIPE/monitoring-and-telemetry/tree/master/prometheus-grafana)
 
 
 ___
