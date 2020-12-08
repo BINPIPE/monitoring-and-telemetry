@@ -171,9 +171,6 @@ There are a few reasons why we want visibility in our highly distributed systems
 -   It keeps us accountable.
 -   Reduce the mean time to resolution (MTTR).
 
-In this blogpost I will explain the core concepts of Prometheus and Grafana.  
-In the last section I set up a demo project, so you can follow along and implement monitoring in your own applications.
-
 **PROMETHEUS**
 
 **WHAT IS PROMETHEUS?**
@@ -301,7 +298,7 @@ Micrometer is an open-source project and provides a metric facade that exposes m
 
 > Micrometer provides a simple facade over the instrumentation clients for the most popular monitoring systems, allowing you to instrument your JVM-based application code without vendor lock-in. Think SLF4J, but for metrics.
 
-Micrometer is not part of the Spring ecosystem and needs to be added as a dependency. In our demo application we will add this to our  `pom.xml`  file. For a deeper understanding, check out our  [blog post](https://ordina-jworks.github.io/microservices/2017/09/17/monitoring-your-microservices-with-micrometer.html)  about Micrometer.
+Micrometer is not part of the Spring ecosystem and needs to be added as a dependency. In our demo application we will add this to our  `pom.xml`  file. 
 
 ## CONFIGURING PROMETHEUS
 
