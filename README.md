@@ -250,7 +250,7 @@ It monitors  **units**  on those targets like:
 The units that we monitor are called metrics, which get saved into the Prometheus time-series database.  
 Prometheus’ metrics are formatted like a human-readable text file.
 
-![Prometheus endpoint actuator](screenshots/prometheus-endpoint.PNG)
+![Prometheus endpoint actuator](screenshots/prometheus-endpointPNG.jpg)
 
 In this file we can see that there is a “HELP” comment which describes what the metric is, and we have a “TYPE” which can be one of four metric-types:
 
@@ -304,7 +304,7 @@ Micrometer is not part of the Spring ecosystem and needs to be added as a depend
 
 To instruct Prometheus on what it needs to scrape, we create a  **prometheus.yml**  configuration file.
 
-![Prometheus configuration file](screenshots/promyml.PNG)
+![Prometheus configuration file](screenshots/promymlPNG.jpg)
 
 In this configuration file we declare a few things:
 
