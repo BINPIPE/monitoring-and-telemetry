@@ -39,7 +39,7 @@ Below are some common linux monitoring commands:
 ```
 ## Top
 
-Top is a basic command which majority of system admins use as part of their daily job. You don’t need to install TOP as it’s already part of every Linux distribution. Following screenshot shows the result of top command. As you can see in the following screenshot running tasks , their CPU, memory and swap usage. You can do whole lot of things to get the output of your liking and need. It has a large number of options/switches which you can use to make your life easy.
+Top is a basic command which majority of system admins use as part of their daily job. You don’t need to install TOP as it’s already part of every Linux distribution. Top commands displays running tasks, their CPU, memory and swap usage. You can do whole lot of things to get the output of your liking and need. It has a large number of options/switches which you can use to make your life easy.
 
 `top`
 
@@ -73,8 +73,7 @@ Mytop tool allows you to monitor your systems mysql performance. It keeps refres
 
 ## Iostat
 
-Iostat command reports you the CPU and disk I/O stats. Reads and writes are shown as block read and block writes. You can get the idle percentage of your CPU to check how much time it has not done any heavy task. Following is the output of iostat command. As you can see in the following screenshot that system is 96 percent idle while sda represents you hard disk.
-
+Iostat command reports you the CPU and disk I/O stats. Reads and writes are shown as block read and block writes. You can get the idle percentage of your CPU to check how much time it has not done any heavy task. Following is the output of iostat command.
 `iostat`
 
 
